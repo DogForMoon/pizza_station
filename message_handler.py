@@ -1,4 +1,4 @@
-from logic import bot, markup_create_pizza, markup_create_break, edit_message
+from logic import bot, markup_create_pizza, markup_create_break, edit_message, finall_steps, pizza_in_progress
 import text
 import telebot
 
@@ -14,7 +14,18 @@ def help_mes(message):
 
 @bot.message_handler(commands=["pizza"])
 def pizza(message):
-    bot.send_message(message.chat.id, text.pizza_text, reply_markup=markup_create_pizza())
+    global pizza_in_progress
+    if message.chat.id in pizza_in_progress :
+        mes = bot.send_message(message.chat.id, text.order_in_progress)
+        pizza_in_progress[message.chat.id].add(mes.message_id)
+    else:
+        pizza_in_progress[message.chat.id] = set()
+        bot.send_message(message.chat.id, text.pizza_text, reply_markup=markup_create_pizza())
+
+
+@bot.message_handler(commands=["order_info"])
+def order_info(message):
+    bot.send_message(message.chat.id, "In developing")
 
 
 @bot.callback_query_handler(func=lambda call: True)
@@ -27,24 +38,19 @@ def callback(call):
         elif call.data == "fch345":
             edit_message(text.break_text, call, markup_create_break())
         if call.data == '0':
-            edit_message(text.order_done, call, None)
+            finall_steps(text.order_done, call, None)
         elif call.data == '1':
-            edit_message(text.order_done, call, None)
+            finall_steps(text.order_done, call, None)
         elif call.data == '2':
-            edit_message(text.order_done, call, None)
+            finall_steps(text.order_done, call, None)
         elif call.data == '3':
-            edit_message(text.order_done, call, None)
+            finall_steps(text.order_done, call, None)
         elif call.data == '4':
-            edit_message(text.order_done, call, None)
+            finall_steps(text.order_done, call, None)
         elif call.data == '5':
-            edit_message(text.order_done, call, None)
+            finall_steps(text.order_done, call, None)
         elif call.data == '6':
-            edit_message(text.order_done, call, None)
-
-
-@bot.callback_query_handler(func=lambda call: True)
-def test_callback(call): # <- passes a CallbackQuery type object to your function
-    telebot.logger.info(call)
+            finall_steps(text.order_done, call, None)
 
 
 @bot.message_handler(content_types=['text'])
