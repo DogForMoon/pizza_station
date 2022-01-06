@@ -1,11 +1,23 @@
 import telebot
-import json
+import random
+import string
+import time
+from variables import bot, pizza_in_progress, pizza
 
 
-TOKEN = "5002588810:AAH42vrIteF9F2aJYwNeY2RS9HU370OT6AQ"
-bot = telebot.TeleBot(TOKEN)
-pizza = [("Маргарита", "mar543"), ("Пепперони", "pep054"), ("Пицца четыре сыра", "fch345")]
-pizza_in_progress = {}
+def beauty_con(data):
+    res = "Вот твои заказы:\n\n"
+    for i in data:
+        p = [pizza[j][0] for j in range(len(pizza)) if pizza[j][1] == i[4]][0]
+        t = time.ctime(i[2])
+        res += f"id заказа: {i[0]}\nпицца: {p}\nперемена: {i[3]}\nвремя заказа: {t}\n\n"
+    return res
+
+
+def order_id():
+    num0 = str(random.randint(100, 999))
+    num1 = str(random.randint(100, 999))
+    return num0 + num1
 
 
 def finall_steps(text_, call_, reply_):
@@ -31,4 +43,11 @@ def markup_create_break():
     breaks = ["1-ая", "2-ая", "3-я", "4-ая", "5-ая", "6-ая", "7-ая"]
     for i in range(len(breaks)):
         markup.add(telebot.types.InlineKeyboardButton(breaks[i], callback_data=str(i)))
+    return markup
+
+
+def markup_create_ids(orders):
+    markup = telebot.types.InlineKeyboardMarkup(row_width=4)
+    for order in orders:
+        markup.add(telebot.types.InlineKeyboardButton(order, callback_data=order))
     return markup
