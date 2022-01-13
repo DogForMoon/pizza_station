@@ -1,6 +1,6 @@
 from logic import bot, markup_create_pizza, markup_create_break, edit_message, finall_steps, pizza_in_progress, order_id, beauty_con, markup_create_ids
 from DB import db_add, db_get, db_del
-from variables import pizza_id
+from variables import pizza_id, sticker
 import text
 import time
 
@@ -18,7 +18,7 @@ def help_mes(message):
 @bot.message_handler(commands=["pizza"])
 def pizza(message):
     global pizza_in_progress
-    if message.chat.id in pizza_in_progress :
+    if message.chat.id in pizza_in_progress:
         mes = bot.send_message(message.chat.id, text.order_in_progress)
         pizza_in_progress[message.chat.id].add(mes.message_id)
     else:
@@ -33,8 +33,22 @@ def order_info(message):
 
 @bot.message_handler(commands=["cancel_order"])
 def cancel_order(message):
-    orders = [i[0] for i in db_get(message.chat.id)]
-    bot.send_message(message.chat.id, text.delete_text, reply_markup=markup_create_ids(orders))
+    orders = [i[0] for i in db_get(message.chat.id) if int(i[2])+2400 >= time.time()]
+    if orders:
+        bot.send_message(message.chat.id, text.delete_text, reply_markup=markup_create_ids(orders))
+    else:
+        bot.send_message(message.chat.id, text.no_orders_to_cancel)
+
+
+@bot.message_handler(commands=['about'])
+def about_mes(message):
+    bot.send_message(message.chat.id, text.about_text)
+
+
+@bot.message_handler(commands=["easter_egg"])
+def easter(message):
+    bot.send_message(message.chat.id, 'О, ты нашёл пасхалку. Держи бесплатную пиццу')
+    bot.send_sticker(message.chat.id, sticker)
 
 
 @bot.callback_query_handler(func=lambda call: True)
@@ -45,7 +59,7 @@ def callback(call):
             global pizza_id
             pizza_id = call.data
 
-        if call.data in {'0', '1', '2', '3', '4', '5', '6'}:
+        elif call.data in {'0', '1', '2', '3', '4', '5', '6'}:
             order = order_id()
             data = [order, str(call.message.chat.id), str(time.time())[:10], call.data, pizza_id]
             if db_add(data):
@@ -53,7 +67,7 @@ def callback(call):
             else:
                 finall_steps(text.error_text, call, None)
         
-        if int(call.data) in [i[0] for i in db_get(call.message.chat.id)]:
+        elif int(call.data) in [i[0] for i in db_get(call.message.chat.id)]:
             if db_del(call.data):
                 edit_message(text.order_del(call.data), call, None)
             else:

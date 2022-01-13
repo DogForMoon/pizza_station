@@ -1,17 +1,19 @@
 import telebot
 import random
-import string
 import time
+import text
 from variables import bot, pizza_in_progress, pizza
 
 
 def beauty_con(data):
-    res = "Вот твои заказы:\n\n"
-    for i in data:
-        p = [pizza[j][0] for j in range(len(pizza)) if pizza[j][1] == i[4]][0]
-        t = time.ctime(i[2])
-        res += f"id заказа: {i[0]}\nпицца: {p}\nперемена: {i[3]}\nвремя заказа: {t}\n\n"
-    return res
+    if data:
+        res = "Вот твои заказы:\n\n"
+        for i in data:
+            p = [pizza[j][0] for j in range(len(pizza)) if pizza[j][1] == i[4]][0]
+            t = time.ctime(i[2])
+            res += f"id заказа: {i[0]}\nпицца: {p}\nперемена: {i[3]}\nвремя заказа: {t}\n\n"
+        return res
+    return text.no_orders
 
 
 def order_id():
