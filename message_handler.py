@@ -45,7 +45,7 @@ def callback(call):
             global pizza_id
             pizza_id = call.data
 
-        if call.data in {'0', '1', '2', '3', '4', '5', '6'}:
+        if call.data in {'1', '2', '3', '4', '5', '6', '0'}:
             order = order_id()
             data = [order, str(call.message.chat.id), str(time.time())[:10], call.data, pizza_id]
             if db_add(data):
@@ -53,7 +53,7 @@ def callback(call):
             else:
                 finall_steps(text.error_text, call, None)
         
-        if int(call.data) in [i[0] for i in db_get(call.message.chat.id)]:
+        if call.data.isnumeric() and int(call.data) in [i[0] for i in db_get(call.message.chat.id)]:
             if db_del(call.data):
                 edit_message(text.order_del(call.data), call, None)
             else:

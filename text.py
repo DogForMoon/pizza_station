@@ -4,7 +4,7 @@ def order_del(order):
 
 
 def order_done(order):
-    order_done_ = f"Твой заказ уже готовится!\nВот id твоего заказа: {order}\nЕсли хочешь узнать информацию по своему заказу, отправь /orders_info\nЕсли хочешь удалить свой заказ отправь /cancle_order"
+    order_done_ = f"Твой заказ уже готовится!\nВот id твоего заказа: {order}\nЕсли хочешь узнать информацию по своему заказу, отправь /orders_info\nЕсли хочешь удалить свой заказ отправь /cancel_order"
     return order_done_
 
 

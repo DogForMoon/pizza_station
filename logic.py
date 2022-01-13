@@ -10,7 +10,7 @@ def beauty_con(data):
     for i in data:
         p = [pizza[j][0] for j in range(len(pizza)) if pizza[j][1] == i[4]][0]
         t = time.ctime(i[2])
-        res += f"id заказа: {i[0]}\nпицца: {p}\nперемена: {i[3]}\nвремя заказа: {t}\n\n"
+        res += f"id заказа: {i[0]}\nпицца: {p}\nперемена: {i[3]+1}\nвремя заказа: {t}\n\n"
     return res
 
 
