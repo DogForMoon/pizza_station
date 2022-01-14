@@ -1,4 +1,6 @@
-from logic import bot, markup_create_pizza, markup_create_break, edit_message, finall_steps, pizza_in_progress, order_id, beauty_con, markup_create_ids
+from logic import bot, markup_create_pizza, markup_create_break,\
+     edit_message, finall_steps, pizza_in_progress, order_id,\
+          beauty_con, markup_create_ids
 from DB import db_add, db_get, db_del
 from variables import pizza_id, sticker
 import text
@@ -23,7 +25,9 @@ def pizza(message):
         pizza_in_progress[message.chat.id].add(mes.message_id)
     else:
         pizza_in_progress[message.chat.id] = set()
-        bot.send_message(message.chat.id, text.pizza_text, reply_markup=markup_create_pizza())
+        bot.send_message(message.chat.id,
+                         text.pizza_text,
+                         reply_markup=markup_create_pizza())
 
 
 @bot.message_handler(commands=["orders_info"])
@@ -35,7 +39,9 @@ def order_info(message):
 def cancel_order(message):
     orders = [i[0] for i in db_get(message.chat.id) if int(i[2])+2400 >= time.time()]
     if orders:
-        bot.send_message(message.chat.id, text.delete_text, reply_markup=markup_create_ids(orders))
+        bot.send_message(message.chat.id,
+                         text.delete_text,
+                         reply_markup=markup_create_ids(orders))
     else:
         bot.send_message(message.chat.id, text.no_orders_to_cancel)
 
@@ -48,7 +54,7 @@ def about_mes(message):
 
 @bot.message_handler(commands=["easter_egg"])
 def easter(message):
-    bot.send_message(message.chat.id, 'О, ты нашёл пасхалку. Держи бесплатную пиццу')
+    bot.send_message(message.chat.id, text.easter_text)
     bot.send_sticker(message.chat.id, sticker)
 
 
@@ -64,15 +70,18 @@ def callback(call):
             else:
                 finall_steps(text.not_time, call, None)
 
-
         elif call.data in {'0', '1', '2', '3', '4', '5', '6'}:
             order = order_id()
-            data = [order, str(call.message.chat.id), str(time.time())[:10], call.data, pizza_id]
+            data = [order,
+                    str(call.message.chat.id),
+                    str(time.time())[:10],
+                    call.data,
+                    pizza_id]
             if db_add(data):
                 finall_steps(text.order_done(order), call, None)
             else:
                 finall_steps(text.error_text, call, None)
-        
+
         elif call.data.isnumeric() and int(call.data) in [i[0] for i in db_get(call.message.chat.id)]:
             if db_del(call.data):
                 edit_message(text.order_del(call.data), call, None)
