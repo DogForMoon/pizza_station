@@ -42,10 +42,18 @@ def markup_create_pizza():
 
 def markup_create_break():
     markup = telebot.types.InlineKeyboardMarkup(row_width=1)
-    breaks = ["1-ая", "2-ая", "3-я", "4-ая", "5-ая", "6-ая", "7-ая"]
-    for i in range(len(breaks)):
-        markup.add(telebot.types.InlineKeyboardButton(breaks[i], callback_data=str(i)))
-    return markup
+    t = time.localtime(time.time())
+    t = t[3]*60 + t[4] + 50
+    breaks = {"1-ая": (520, 560), "2-ая": (600, 615), "3-я": (655, 675), "4-ая": (715, 730), "5-ая": (770, 785), "6-ая": (825, 845), "7-ая": (885, 900)}
+    breaks_list = []
+    for i in breaks:
+        if t <= breaks[i][1]:
+            breaks_list.append(i)
+    if breaks_list:
+        for i in range(len(breaks_list)):
+            markup.add(telebot.types.InlineKeyboardButton(breaks[i], callback_data=str(i)))
+        return markup
+    return False
 
 
 def markup_create_ids(orders):

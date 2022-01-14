@@ -43,6 +43,7 @@ def cancel_order(message):
 @bot.message_handler(commands=['about'])
 def about_mes(message):
     bot.send_message(message.chat.id, text.about_text)
+    bot.send_message(message.chat.id, text.technical_info)
 
 
 @bot.message_handler(commands=["easter_egg"])
@@ -55,9 +56,14 @@ def easter(message):
 def callback(call):
     if call.message:
         if call.data in {"mar543", "pep054", "fch345"}:
-            edit_message(text.break_text, call, markup_create_break())
-            global pizza_id
-            pizza_id = call.data
+            markup = markup_create_break()
+            if markup:
+                edit_message(text.break_text, call, markup)
+                global pizza_id
+                pizza_id = call.data
+            else:
+                finall_steps(text.not_time, call, None)
+
 
         elif call.data in {'0', '1', '2', '3', '4', '5', '6'}:
             order = order_id()
