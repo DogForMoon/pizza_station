@@ -1,7 +1,5 @@
 import sqlite3
-
-connection = sqlite3.connect('pizza.db', check_same_thread=False)
-cursor = connection.cursor()
+import os
 
 
 def db_add(data):
@@ -30,7 +28,11 @@ def db_del(order_id):
         return False
 
 
-cursor.execute("""CREATE TABLE IF NOT EXISTS pizza 
+connection = sqlite3.connect(os.getcwd() + '\\student\\pizza.db',
+                             check_same_thread=False)
+cursor = connection.cursor()
+
+cursor.execute("""CREATE TABLE IF NOT EXISTS pizza
     (
     orderid STR,
     chatid INT,
