@@ -1,8 +1,8 @@
-import telebot
+from telebot.async_telebot import AsyncTeleBot
 
 
 TOKEN = "5002588810:AAH42vrIteF9F2aJYwNeY2RS9HU370OT6AQ"
-bot = telebot.TeleBot(TOKEN)
+bot = AsyncTeleBot(TOKEN)
 pizza_id = str()
 pizza = [("Маргарита", "mar543"),
          ("Пепперони", "pep054"),

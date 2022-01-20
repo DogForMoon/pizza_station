@@ -22,21 +22,21 @@ def order_id():
     return num0 + num1
 
 
-def finall_steps(text_, call_, reply_):
-    bot.edit_message_text(text=text_,
-                          chat_id=call_.message.chat.id,
-                          message_id=call_.message.message_id,
-                          reply_markup=reply_)
+async def finall_steps(text_, call_, reply_):
+    await bot.edit_message_text(text=text_,
+                                chat_id=call_.message.chat.id,
+                                message_id=call_.message.message_id,
+                                reply_markup=reply_)
     for i in pizza_in_progress[call_.message.chat.id]:
-        bot.delete_message(call_.message.chat.id, i)
+        await bot.delete_message(call_.message.chat.id, i)
     del pizza_in_progress[call_.message.chat.id]
 
 
-def edit_message(text_, call_, reply_):
-    return bot.edit_message_text(text=text_,
-                                 chat_id=call_.message.chat.id,
-                                 message_id=call_.message.message_id,
-                                 reply_markup=reply_)
+async def edit_message(text_, call_, reply_):
+    await bot.edit_message_text(text=text_,
+                                chat_id=call_.message.chat.id,
+                                message_id=call_.message.message_id,
+                                reply_markup=reply_)
 
 
 def markup_create_pizza():
@@ -64,6 +64,7 @@ def markup_create_break():
             breaks_list.append(i)
     if breaks_list:
         for i in breaks_list:
+            print(int(i[0]))
             markup.add(telebot.types.InlineKeyboardButton(i, callback_data=int(i[0])))
         return markup
     return False
