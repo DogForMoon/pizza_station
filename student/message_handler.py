@@ -1,10 +1,11 @@
 from logic import bot, markup_create_pizza, markup_create_break,\
      edit_message, finall_steps, pizza_in_progress, order_id,\
           beauty_con, markup_create_ids
-from DB import db_add, db_get, db_del
+from DB_pizza import db_add, db_get, db_del
 from variables import pizza_id, sticker
 import text
 import time
+import asyncio
 
 
 @bot.message_handler(commands=["start"])
@@ -31,7 +32,7 @@ async def pizza(message):
 
 
 @bot.message_handler(commands=["orders_info"])
-async def order_info(message):
+async def orders_info(message):
     await bot.send_message(message.chat.id, beauty_con(db_get(message.chat.id)))
 
 
@@ -99,5 +100,4 @@ async def message_ans(message):
     await bot.reply_to(message, text.message_ans_text)
 
 
-import asyncio
-asyncio.run(bot.polling())
+asyncio.run(bot.infinity_polling())

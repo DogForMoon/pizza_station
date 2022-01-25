@@ -57,14 +57,13 @@ def markup_create_break():
               "4-ая": (715, 730),
               "5-ая": (770, 785),
               "6-ая": (825, 845),
-              "7-ая": (885, 900)}
+              "7-ая": (1810, 900)} #  885
     breaks_list = []
     for i in breaks:
         if t <= breaks[i][0]:
             breaks_list.append(i)
     if breaks_list:
         for i in breaks_list:
-            print(int(i[0]))
             markup.add(telebot.types.InlineKeyboardButton(i, callback_data=int(i[0])))
         return markup
     return False

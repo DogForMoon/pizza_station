@@ -2,16 +2,8 @@ import sqlite3
 import os
 
 
-def db_add(data):
-    cursor.execute("INSERT INTO pizza VALUES(?, ?, ?, ?, ?)", data)
-    connection.commit()
-    return True
-
-
-def db_get(chat_id):
-    cursor.execute(f"""SELECT * FROM pizza
-                        WHERE chatid = {chat_id};
-                        """)
+def db_get():
+    cursor.execute(f"""SELECT * FROM pizza""")
     results = cursor.fetchall()
     return results
 
@@ -31,14 +23,3 @@ def db_del(order_id):
 connection = sqlite3.connect(os.getcwd() + '\\student\\pizza.db',
                              check_same_thread=False)
 cursor = connection.cursor()
-
-cursor.execute("""CREATE TABLE IF NOT EXISTS pizza
-    (
-    orderid STR,
-    chatid INT,
-    time INT,
-    break INT,
-    pizzaid STR
-    )""")
-
-connection.commit()
