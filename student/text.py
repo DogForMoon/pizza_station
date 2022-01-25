@@ -3,6 +3,14 @@ def order_del(order):
     return deleted_order
 
 
+def order_is_cancel(order_id):
+    return f"Заказ №{order_id} был отменён поваром"
+
+
+def order_is_ready(order_id):
+    return f"Заказ №{order_id} ждёт тебя! Ты можешь забрать его в буфете"
+
+
 def order_done(order):
     order_done_ = f"Твой заказ уже готовится!\nВот id твоего заказа:\
  {order}\nЕсли хочешь узнать информацию по своему заказу,\

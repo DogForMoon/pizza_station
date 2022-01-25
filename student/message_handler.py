@@ -1,11 +1,12 @@
 from logic import bot, markup_create_pizza, markup_create_break,\
      edit_message, finall_steps, pizza_in_progress, order_id,\
-          beauty_con, markup_create_ids
+          beauty_con, markup_create_ids, ready_orders_checker_runner
 from DB_pizza import db_add, db_get, db_del
 from variables import pizza_id, sticker
 import text
 import time
 import asyncio
+import threading
 
 
 @bot.message_handler(commands=["start"])
@@ -100,4 +101,11 @@ async def message_ans(message):
     await bot.reply_to(message, text.message_ans_text)
 
 
-asyncio.run(bot.infinity_polling())
+t = threading.Thread(target=ready_orders_checker_runner)
+t.start()
+
+while True:
+    try:
+        asyncio.run(bot.infinity_polling())
+    except:
+        time.sleep(10)

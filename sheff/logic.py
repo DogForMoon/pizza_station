@@ -37,12 +37,12 @@ async def checker():
         data = db_get()
         if data:
             for i in data:
-                for j in ids:
-                    if i[0] not in already_in_turn:
+                if i[0] not in already_in_turn:
+                    for j in ids:
                         await bot.send_message(j,
                                                beauty_orders(i),
                                                reply_markup=order_in_turn_markup(i[0], i[1]))
-        sleep(10)
+        sleep(5)
 
 
 def checker_runner():

@@ -3,7 +3,7 @@ import os
 
 
 def db_add(data):
-    cursor.execute("INSERT INTO orders VALUES(?, ?)", data)
+    cursor.execute("INSERT INTO orders VALUES(?, ?, ?)", data)
     connection.commit()
     return True
 
@@ -15,7 +15,8 @@ cursor = connection.cursor()
 cursor.execute("""CREATE TABLE IF NOT EXISTS orders
     (
     orderid INT,
-    chatid INT
+    chatid INT,
+    status STR
     )""")
 
 connection.commit()

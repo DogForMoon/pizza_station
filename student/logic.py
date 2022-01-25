@@ -1,8 +1,10 @@
 import telebot
+import asyncio
 import random
 import time
 import text
 from variables import bot, pizza_in_progress, pizza
+from DB_orders import get_orders, del_orders
 
 
 def beauty_con(data):
@@ -57,7 +59,7 @@ def markup_create_break():
               "4-ая": (715, 730),
               "5-ая": (770, 785),
               "6-ая": (825, 845),
-              "7-ая": (1810, 900)} #  885
+              "7-ая": (885, 900)} #  1810
     breaks_list = []
     for i in breaks:
         if t <= breaks[i][0]:
@@ -75,3 +77,22 @@ def markup_create_ids(orders):
         markup.add(telebot.types.InlineKeyboardButton(order,
                                                       callback_data=order))
     return markup
+
+
+async def ready_orders_checker():
+    while True:
+        data = get_orders()
+        if data:
+            for i in data:
+                if del_orders(i[0]):
+                    if i[-1] == "ready":
+                        await bot.send_message(i[1], text.order_is_ready(i[0]))
+                    elif i[-1] == "cancel":
+                        await bot.send_message(i[1], text.order_is_cancel(i[0]))
+                else:
+                    await bot.send_message(i[1], text.error_text)
+        time.sleep(5)
+
+
+def ready_orders_checker_runner():
+    asyncio.run(ready_orders_checker())
