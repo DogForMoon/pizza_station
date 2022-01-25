@@ -1,16 +1,23 @@
-import telebot
 from variables import bot, pizza, ids, already_in_turn
 from DB_pizza import db_get
-from time import sleep, ctime
+from time import sleep
+import text
 import telebot
 import asyncio
 
 
-def order_in_turn_markup(chat_id):
+def order_in_turn_markup(order_id, chat_id):
     markup = telebot.types.InlineKeyboardMarkup(row_width=1)
-    markup.add(telebot.types.InlineKeyboardButton("Заказ готов", callback_data=f"ready {chat_id}"))
-    markup.add(telebot.types.InlineKeyboardButton("Отменить заказ", callback_data=(f"cancel {chat_id}")))
+    markup.add(telebot.types.InlineKeyboardButton(text.ready, callback_data=text.callback_ready(order_id, chat_id)))
+    markup.add(telebot.types.InlineKeyboardButton(text.cancel, callback_data=text.callback_cancel(order_id, chat_id)))
     return markup
+
+
+async def edit_message(text_, call_, reply_):
+    await bot.edit_message_text(text=text_,
+                                chat_id=call_.message.chat.id,
+                                message_id=call_.message.message_id,
+                                reply_markup=reply_)
 
 
 def beauty_orders(i):
@@ -20,7 +27,7 @@ def beauty_orders(i):
         if i[4] == j:
             p = j[0]
             break
-    b = f"id заказа: {i[0]}\nвремя заказа: {ctime(i[2])}\nперемена выдачи: {i[3]}\nнаименование товара: {p}"
+    b = text.beauty_order(i, p)
     already_in_turn.add(i[0])
     return b
 
@@ -32,7 +39,9 @@ async def checker():
             for i in data:
                 for j in ids:
                     if i[0] not in already_in_turn:
-                        await bot.send_message(j, beauty_orders(i), reply_markup=order_in_turn_markup(i[1]))
+                        await bot.send_message(j,
+                                               beauty_orders(i),
+                                               reply_markup=order_in_turn_markup(i[0], i[1]))
         sleep(10)
 
 

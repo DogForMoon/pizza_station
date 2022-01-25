@@ -3,7 +3,7 @@ import os
 
 
 def db_get():
-    cursor.execute(f"""SELECT * FROM pizza""")
+    cursor.execute("""SELECT * FROM pizza""")
     results = cursor.fetchall()
     return results
 
