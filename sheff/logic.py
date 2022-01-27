@@ -24,7 +24,7 @@ def beauty_orders(i):
     global already_in_turn
     p = str()
     for j in pizza:
-        if i[4] == j:
+        if i[4] == j[1]:
             p = j[0]
             break
     b = text.beauty_order(i, p)
