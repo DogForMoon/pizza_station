@@ -1,6 +1,7 @@
 from logic import bot, markup_create_pizza, markup_create_break,\
      edit_message, finall_steps, pizza_in_progress, order_id,\
-          beauty_con, markup_create_ids, ready_orders_checker_runner
+          beauty_con, markup_create_ids, ready_orders_checker_runner,\
+          markup_create_onemore
 from DB_pizza import db_add, db_get, db_del
 from variables import pizza_id, sticker
 import text
@@ -63,11 +64,24 @@ async def easter(message):
 @bot.callback_query_handler(func=lambda call: call.data in {"mar543", "pep054", "fch345"})
 async def callback_pizza(call):
     if call.message:
+        markup = markup_create_onemore()
+        await edit_message(text.one_more_order, call, markup)
+        global pizza_id
+        pizza_id.append(call.data)
+
+
+@bot.callback_query_handler(func=lambda call: call.data == "onemore")
+async def callback_onemore(call):
+    if call.message:
+        await edit_message(text.pizza_text, call, markup_create_pizza())
+
+
+@bot.callback_query_handler(func=lambda call: call.data == "stop")
+async def callback_onemore(call):
+    if call.message:
         markup = markup_create_break()
         if markup:
             await edit_message(text.break_text, call, markup)
-            global pizza_id
-            pizza_id = call.data
         else:
             await finall_steps(text.not_time, call, None)
 
@@ -76,6 +90,8 @@ async def callback_pizza(call):
 async def callback_break(call):
     if call.message:
         order = order_id()
+        global pizza_id
+        pizza_id = "".join(pizza_id)
         data = [order,
                 str(call.message.chat.id),
                 str(time.time())[:10],
