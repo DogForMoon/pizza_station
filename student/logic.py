@@ -59,7 +59,7 @@ def markup_create_break():
               "4-ая": (715, 730),
               "5-ая": (770, 785),
               "6-ая": (825, 845),
-              "7-ая": (885, 900)} #  1810
+              "7-ая": (23456, 23456)} #  885 900
     breaks_list = []
     for i in breaks:
         if t <= breaks[i][0]:
@@ -69,6 +69,13 @@ def markup_create_break():
             markup.add(telebot.types.InlineKeyboardButton(i, callback_data=int(i[0])))
         return markup
     return False
+
+
+def markup_create_onemore():
+    markup = telebot.types.InlineKeyboardMarkup(row_width=1)
+    markup.add(telebot.types.InlineKeyboardButton("Добавить ещё один продукт в заказ", callback_data="onemore"))
+    markup.add(telebot.types.InlineKeyboardButton("Продолжить оформление заказа", callback_data="stop"))
+    return markup
 
 
 def markup_create_ids(orders):
