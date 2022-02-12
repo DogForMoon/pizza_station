@@ -1,9 +1,9 @@
 from logic import bot, markup_create_pizza, markup_create_break,\
      edit_message, finall_steps, pizza_in_progress, order_id,\
           beauty_con, markup_create_ids, ready_orders_checker_runner,\
-          markup_create_onemore
+          markup_create_onemore, markup_create_product
 from DB_pizza import db_add, db_get, db_del
-from variables import pizza_id, sticker
+from variables import pizza_id, sticker, pizza_association, pizza_ids
 import text
 import time
 import asyncio
@@ -21,7 +21,7 @@ async def help_mes(message):
 
 
 @bot.message_handler(commands=["pizza"])
-async def pizza(message):
+async def pizza_choice_cat(message):
     global pizza_in_progress
     if message.chat.id in pizza_in_progress:
         mes = await bot.send_message(message.chat.id, text.order_in_progress)
@@ -61,13 +61,20 @@ async def easter(message):
     await bot.send_sticker(message.chat.id, sticker)
 
 
-@bot.callback_query_handler(func=lambda call: call.data in {"mar543", "pep054", "fch345"})
+@bot.callback_query_handler(func=lambda call: call.data in pizza_ids)
 async def callback_pizza(call):
     if call.message:
         markup = markup_create_onemore()
         await edit_message(text.one_more_order, call, markup)
         global pizza_id
         pizza_id.append(call.data)
+
+
+@bot.callback_query_handler(func=lambda call: call.data in [i for i in pizza_association])
+async def pizza_choice_product(call):
+    if call.message:
+        markup = markup_create_product(call.data)
+        await edit_message(text.choice_product, call, markup)
 
 
 @bot.callback_query_handler(func=lambda call: call.data == "onemore")
@@ -78,6 +85,7 @@ async def callback_onemore(call):
 
 @bot.callback_query_handler(func=lambda call: call.data == "stop")
 async def callback_onemore(call):
+    """Нельзя выбрать одно наименование несколько раз"""
     if call.message:
         markup = markup_create_break()
         if markup:
