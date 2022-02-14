@@ -22,12 +22,7 @@ async def edit_message(text_, call_, reply_):
 
 def beauty_orders(i):
     global already_in_turn
-    p = str()
-    for j in pizza:
-        if i[4] == j[1]:
-            p = j[0]
-            break
-    b = text.beauty_order(i, p)
+    b = text.beauty_order(i)
     already_in_turn.add(i[0])
     return b
 

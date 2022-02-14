@@ -3,7 +3,7 @@ import asyncio
 import random
 import time
 import text
-from variables import bot, pizza_in_progress, pizza
+from variables import bot, pizza_in_progress, pizza_association, pizza_cat
 from DB_orders import get_orders, del_orders
 
 
@@ -11,9 +11,7 @@ def beauty_con(data):
     if data:
         res = "Вот твои заказы:\n\n"
         for i in data:
-            p = [pizza[j][0] for j in range(len(pizza)) if pizza[j][1] == i[4]][0]
-            t = time.ctime(i[2])
-            res += text.beauty_text(i[0], p, i[3], t)
+            res += text.beauty_text(i[0], i[4], i[3], time.ctime(i[2]))
         return res
     return text.no_orders
 
@@ -43,9 +41,16 @@ async def edit_message(text_, call_, reply_):
 
 def markup_create_pizza():
     markup = telebot.types.InlineKeyboardMarkup(row_width=1)
-    for i in pizza:
-        markup.add(telebot.types.InlineKeyboardButton(i[0],
-                   callback_data=i[1]))
+    for i in pizza_association:
+        markup.add(telebot.types.InlineKeyboardButton(pizza_association[i],
+                   callback_data=i))
+    return markup
+
+
+def markup_create_product(call):
+    markup = telebot.types.InlineKeyboardMarkup(row_width=1)
+    for i in pizza_cat[call]:
+        markup.add(telebot.types.InlineKeyboardButton(i[0], callback_data=i[1]))
     return markup
 
 
