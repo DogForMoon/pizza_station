@@ -32,9 +32,10 @@ def beauty_text(i_0, p, i_3, t):
                 if pro[1] == pizza_id:
                     p_beaut += f"\n~{pro[0]},"
         prev = i
-    p_beaut = p_beaut[:-2]
+    p_beaut = p_beaut[:-1]
     return f"id заказа: {i_0}\nпродукты: {p_beaut}\nперемена: {i_3}\nвремя\
  заказа: {t}\n\n"
+
 
 welcome_text = """Привет! Это чат-бот для заказа пиццы.
 Пиши /pizza и оформляй заказ!
