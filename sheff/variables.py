@@ -1,7 +1,7 @@
 from telebot.async_telebot import AsyncTeleBot
 
 
-TOKEN = "5007353537:AAE-wXaPZDCOiBoJx8dIZGeaplQeE3pTZXA"
+TOKEN = "TOKEN"
 bot = AsyncTeleBot(TOKEN)
 ids = set()
 already_in_turn = set()
