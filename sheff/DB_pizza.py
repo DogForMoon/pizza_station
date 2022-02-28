@@ -19,7 +19,7 @@ def db_del(order_id):
         print(f'\n{e}\n')
         return False
 
-
+print(os.getcwd() + '\\student\\pizza.db')
 connection = sqlite3.connect(os.getcwd() + '\\student\\pizza.db',
                              check_same_thread=False)
 cursor = connection.cursor()

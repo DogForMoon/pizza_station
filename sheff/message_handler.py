@@ -19,6 +19,7 @@ async def start(message):
 @bot.callback_query_handler(func=lambda call: call.data.split()[-1] == 'ready')
 async def callback_ready(call):
     if call.message:
+        print(call.data.split())
         if db_add(call.data.split()) and db_del(call.data.split()[0]):
             await edit_message(text.send_notification(call), call, None)
         else:
@@ -39,6 +40,6 @@ t.start()
 
 while True:
     try:
-        asyncio.run(bot.infinity_polling())  # bot.polling(none_stop=True, interval=0)
+        asyncio.run(bot.infinity_polling())
     except:
         sleep(10)
