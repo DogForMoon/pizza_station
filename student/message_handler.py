@@ -1,7 +1,7 @@
 from logic import bot, markup_create_pizza, markup_create_break,\
      edit_message, finall_steps, pizza_in_progress, order_id,\
-          beauty_con, markup_create_ids, ready_orders_checker_runner,\
-          markup_create_onemore, markup_create_product
+     beauty_con, markup_create_ids, ready_orders_checker_runner,\
+     markup_create_onemore, markup_create_product
 from DB_pizza import db_add, db_get, db_del
 from variables import pizza_id, sticker, pizza_association, pizza_ids
 import text
@@ -20,7 +20,7 @@ async def help_mes(message):
     await bot.reply_to(message, text.help_text)
 
 
-@bot.message_handler(commands=["pizza"])
+@bot.message_handler(commands=["order"])
 async def pizza_choice_cat(message):
     global pizza_in_progress
     if message.chat.id in pizza_in_progress:
@@ -85,7 +85,7 @@ async def callback_onemore(call):
 
 @bot.callback_query_handler(func=lambda call: call.data == "stop")
 async def callback_onemore(call):
-    """Нельзя выбрать одно наименование несколько раз"""
+    """!Нельзя выбрать одно наименование несколько раз!"""
     if call.message:
         markup = markup_create_break()
         if markup:

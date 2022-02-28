@@ -1,4 +1,4 @@
-from variables import bot, pizza, ids, already_in_turn
+from variables import bot, pizza_cat, ids, already_in_turn
 from DB_pizza import db_get
 from time import sleep
 import text

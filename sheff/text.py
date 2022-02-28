@@ -18,15 +18,15 @@ def beauty_order(i):
     p = i[4]
     p_beaut = str()
     prev = int()
-    for i in range(6, len(p)+6, 6):
-        pizza_id = p[prev:i]
+    for k in range(6, len(p)+6, 6):
+        pizza_id = p[prev:k]
         for l in pizza_cat:
             for pro in pizza_cat[l]:
                 if pro[1] == pizza_id:
                     p_beaut += f"\n~{pro[0]},"
-        prev = i
+        prev = k
     p_beaut = p_beaut[:-2]
-    return f"id заказа: {i[0]}\nвремя заказа: {ctime(i[2])}\nперемена выдачи: {i[3]}\nнаименование товара: {p_beaut}"
+    return f"id заказа: {i[0]}\nвремя заказа: {ctime(i[2])}\nперемена выдачи: {i[3]}\nнаименования: {p_beaut}"
 
 
 error = "Произошла ошибка на сервере. Попробуйте позже"
