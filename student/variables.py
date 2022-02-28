@@ -1,7 +1,7 @@
 from telebot.async_telebot import AsyncTeleBot
 
 
-TOKEN = "5002588810:AAH42vrIteF9F2aJYwNeY2RS9HU370OT6AQ"
+TOKEN = "TOKEN"
 bot = AsyncTeleBot(TOKEN)
 pizza_id = list()
 """
