@@ -25,7 +25,7 @@ def beauty_order(i):
                 if pro[1] == pizza_id:
                     p_beaut += f"\n~{pro[0]},"
         prev = k
-    p_beaut = p_beaut[:-2]
+    p_beaut = p_beaut[:-1]
     return f"id заказа: {i[0]}\nвремя заказа: {ctime(i[2])}\nперемена выдачи: {i[3]}\nнаименования: {p_beaut}"
 
 

@@ -39,6 +39,6 @@ t.start()
 
 while True:
     try:
-        asyncio.run(bot.infinity_polling())  # bot.polling(none_stop=True, interval=0)
+        asyncio.run(bot.infinity_polling())
     except:
         sleep(10)
